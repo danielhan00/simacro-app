@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import '../styles/LandingPage.css';
 
 // Landing Page component
 //
@@ -26,9 +27,11 @@ const LandingPage = () => {
       <header className="header">
         <h1>Interactive 3D Model Viewer</h1>
         <p>Welcome to Daniel's Interactive 3D Model Viewer for Simacro.</p>
-        <button onClick={handleStart}>Start as Guest</button>
-        <br />
-        <button onClick={handleLogin}>Login</button>
+        <div className="buttons-container">
+        <button className="start-button" onClick={handleStart}>Start as Guest</button>
+          <button className="login-button" onClick={handleLogin}>Login / Sign Up</button>
+        </div>
+        <div className="footer">User Guide and Code Repository can be found <a href="https://github.com/danielhan00/simacro-app">here.</a></div>
       </header>
     </div>
   );

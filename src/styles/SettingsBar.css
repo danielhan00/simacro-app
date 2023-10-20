@@ -1,0 +1,20 @@
+/* SettingsBar.css */
+.settings-bar {
+    display: flex;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .button:hover {
+    background-color: #777;
+  }

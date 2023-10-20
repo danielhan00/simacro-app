@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { useGLTF, Stage, PresentationControls } from "@react-three/drei";
 
@@ -9,25 +10,39 @@ function Model(props) {
 
 // Rendering the 3D primitive object
 function RenderObject() {
+  // allows the user to custom choose a background color
+  const [backgroundColor, setBackgroundColor] = useState("#101010");
+  const handleBackgroundColorChange = (e) => {
+    setBackgroundColor(e.target.value);
+  };
+
   return (
-    <Canvas
-      dpr={[1, 2]}
-      shadows
-      camera={{ fov: 45 }}
-      style={{ position: "absolute" }}
-    >
-      <color attach="background" args={["#101010"]} />
-      <PresentationControls
-        speed={1.5}
-        global
-        zoom={0.5}
-        polar={[-0.1, Math.PI / 4]}
+    <div>
+      <label htmlFor="backgroundColor">Background:</label>
+      <input
+        type="color"
+        id="backgroundColor"
+        value={backgroundColor}
+        onChange={handleBackgroundColorChange}
+      />
+      <Canvas
+        dpr={[1, 2]}
+        shadows={{}}
+        camera={{ fov: 45 }}
+        style={{ position: "absolute", backgroundColor }}
       >
-        <Stage environment={"sunset"}>
-          <Model scale={0.01} />
-        </Stage>
-      </PresentationControls>
-    </Canvas>
+        <PresentationControls
+          speed={1.5}
+          global
+          zoom={0.5}
+          polar={[-0.1, Math.PI / 4]}
+        >
+          <Stage environment={"sunset"}>
+            <Model scale={0.01} />
+          </Stage>
+        </PresentationControls>
+      </Canvas>
+    </div>
   );
 }
 

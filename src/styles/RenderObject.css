@@ -1,0 +1,6 @@
+.renderBox {
+    display: flex;
+    padding: 10px 20px;
+    border: black;
+    width: 20%;
+}

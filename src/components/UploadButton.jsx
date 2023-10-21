@@ -6,7 +6,7 @@ const UploadButton = () => {
     alert("Upload file prompt here");
   };
 
-  return <button className="button" onClick={handleUpload}>Upload GLB File Here</button>;
+  return <button className="button" onClick={handleUpload}>Upload GLB File</button>;
 };
 
 export default UploadButton;

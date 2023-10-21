@@ -1,52 +1,81 @@
-import { useState } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { useGLTF, Stage, PresentationControls } from "@react-three/drei";
+import React, { useState, Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Html, OrbitControls, Stage } from "@react-three/drei";
+import Model from "./renderHelp/Model";
+import Lighting from "./renderHelp/Lighting";
 import "../styles/RenderObject.css";
 
-// setting up react hook to obtain the 3D model object from a file
-function Model(props) {
-  const { scene } = useGLTF("/totoro.glb");
-  return <primitive object={scene} {...props} />;
-}
+const RenderObject = ({ modelUrl }) => {
+  // settings consts for background color and lightType
+  const [backgroundColor, setBackgroundColor] = useState("#7E8A6A");
+  const [lightType, setLightType] = useState("ambient");
 
-// Rendering the 3D primitive object
-function RenderObject() {
-  // allows the user to custom choose a background color
-  const [backgroundColor, setBackgroundColor] = useState("#101010");
   const handleBackgroundColorChange = (e) => {
     setBackgroundColor(e.target.value);
   };
 
+  const filename = modelUrl.split("/").pop();
+  const isLightHighlighted = (type) =>
+    lightType === type ? "highlighted-button" : "";
+
+  /*
+
+  */
+  const getLight = () => {
+    switch (lightType) {
+      case "directional":
+        return <directionalLight intensity={2} position={[5, 5, 5]} />;
+      case "point":
+        return <pointLight intensity={2} position={[0, 5, 0]} />;
+      case "ambient":
+        return <ambientLight intensity={2} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
-      <label htmlFor="backgroundColor">Background:</label>
-      <input
-        type="color"
-        id="backgroundColor"
-        value={backgroundColor}
-        onChange={handleBackgroundColorChange}
-      />
-      <div>
-        <Canvas
-          dpr={[1, 2]}
-          shadows={{}}
-          camera={{ fov: 45 }}
-          style={{ position: "absolute", backgroundColor }}
-        >
-          <PresentationControls
-            speed={1.5}
-            global
-            zoom={0.5}
-            polar={[-0.1, Math.PI / 4]}
+      <div className="filename-label">{filename}</div>
+      <div className="container">
+        <div className="renderBox">
+          {/* Three.js Canvas for 3D model */}
+          <Canvas
+            dpr={[1, 2]}
+            shadows={{}}
+            camera={{ position: [0, 50, 50], fov: 45 }}
+            style={{ backgroundColor }}
           >
+            {getLight()}
+            <Suspense fallback={<Html center>Loading...</Html>}>
+              <Model modelUrl={modelUrl} />
+            </Suspense>
+
             <Stage environment={"sunset"}>
-              <Model scale={0.01} />
+              <Model modelUrl={modelUrl} />
             </Stage>
-          </PresentationControls>
-        </Canvas>
+            <OrbitControls></OrbitControls>
+          </Canvas>
+        </div>
+        <div className="box2">
+          <div>
+            <label htmlFor="backgroundColor">Background:</label>
+            <input
+              type="color"
+              id="backgroundColor"
+              value={backgroundColor}
+              onChange={handleBackgroundColorChange}
+            />
+          </div>
+          <br />
+          <Lighting
+            setLightType={setLightType}
+            isLightHighlighted={isLightHighlighted}
+          />
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default RenderObject;

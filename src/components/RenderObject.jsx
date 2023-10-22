@@ -39,6 +39,7 @@ const RenderObject = ({ modelUrl }) => {
       <div className="filename-label">{filename}</div>
       <div className="container">
         <div className="renderBox">
+
           {/* Three.js Canvas for 3D model */}
           <Canvas
             dpr={[1, 2]}
@@ -46,15 +47,13 @@ const RenderObject = ({ modelUrl }) => {
             camera={{ position: [0, 50, 50], fov: 45 }}
             style={{ backgroundColor }}
           >
-            {getLight()}
-            <Suspense fallback={<Html center>Loading...</Html>}>
-              <Model modelUrl={modelUrl} />
-            </Suspense>
-
-            <Stage environment={"sunset"}>
-              <Model modelUrl={modelUrl} />
-            </Stage>
             <OrbitControls></OrbitControls>
+            <Suspense fallback={<Html center>Loading...</Html>}>
+              <Stage environment={"sunset"}>
+                <Model modelUrl={modelUrl} />
+              </Stage>
+            </Suspense>
+            {getLight()}
           </Canvas>
         </div>
         <div className="box2">
